@@ -26,18 +26,6 @@ const state = {
     canvasLoopId: null
 };
 
-const RTC_CONFIGURATION = {
-    iceServers: [
-        {
-            urls: 'stun:stun.l.google.com:19302',
-        },
-        {
-            urls: 'stun:stun1.l.google.com:19302',
-        },
-        
-    ]
-};
-
 const E = id => document.getElementById(id);
 const elements = {
     status: E('status'),
@@ -260,7 +248,7 @@ async function createViewer() {
     if (state.peerConnection) { try { state.peerConnection.close(); } catch (e) { } state.peerConnection = null; }
     if (state.abortController) { try { state.abortController.abort(); } catch (e) { } state.abortController = null; }
 
-    const pc = new RTCPeerConnection(RTC_CONFIGURATION);
+    const pc = new RTCPeerConnection();
     state.peerConnection = pc;
     pc.ontrack = handleTrackEvent;
     pc.oniceconnectionstatechange = handleIceConnectionStateChange;
@@ -292,7 +280,7 @@ async function createBroadcaster(tag) {
     try {
         const stream = await getCameraStream();
         elements.mobileStatus.textContent = 'Camera ready. Connecting...';
-        const pc = new RTCPeerConnection(RTC_CONFIGURATION);
+        const pc = new RTCPeerConnection();
         state.peerConnection = pc;
         pc.oniceconnectionstatechange = () => { elements.mobileStatus.textContent = `Connection: ${pc.iceConnectionState}`; };
         for (const track of stream.getTracks()) pc.addTrack(track, stream);
@@ -565,4 +553,4 @@ async function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
-window.calculateMetrics = calculateMetrics;
+

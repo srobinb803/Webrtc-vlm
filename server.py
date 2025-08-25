@@ -7,7 +7,7 @@ import time
 import json
 import asyncio
 from aiohttp import web
-from aiortc import MediaStreamTrack, RTCPeerConnection, RTCSessionDescription, RTCConfiguration, RTCIceServer
+from aiortc import MediaStreamTrack, RTCPeerConnection, RTCSessionDescription
 from aiortc.contrib.media import MediaRelay
 import numpy as np
 import cv2
@@ -17,13 +17,6 @@ from typing import Dict, List
 
 # Import utility functions
 from models.yolov5_utils import letterbox, process_detections, draw_detections, COCO_NAMES
-
-RTC_CONFIG = RTCConfiguration(
-    iceServers=[
-        RTCIceServer("stun:stun.l.google.com:19302"),
-        RTCIceServer("stun:stun1.l.google.com:19302"),
-    ]
-)
 
 # Configuration
 MODE = os.environ.get("MODE", "server")  # server or wasm
@@ -276,7 +269,7 @@ async def offer_phone(request):
     if not sdp:
         return web.json_response({"error": "missing_sdp"}, status=400)
 
-    pc = RTCPeerConnection(configuration=RTC_CONFIG)
+    pc = RTCPeerConnection()
     pcs[tag] = pc
     print(f"[pc-in] Created for tag={tag}")
 
@@ -327,7 +320,7 @@ async def offer_view(request):
     # Pass client_mode into transform track so server knows whether to run inference/overlay
     transformed = create_transform_track(source, tag, client_mode)
 
-    pc = RTCPeerConnection(configuration=RTC_CONFIG)
+    pc = RTCPeerConnection()
     print(f"[pc-out] Created viewer pc for tag={tag} (client_mode={client_mode})")
 
     @pc.on("connectionstatechange")
