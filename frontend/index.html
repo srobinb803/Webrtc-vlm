@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WebRTC VLM Demo</title>
+  <style>
+    #desktop-view,
+    #mobile-view {
+      display: none;
+    }
+  </style>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+  <main>
+    <div id="desktop-view">
+      <header class="main-header">
+        <h1>Real-time WebRTC VLM Demo</h1>
+        <p id="status">Initializing...</p>
+        <div class="mode-selector">
+          <button id="server-mode-btn" class="mode-btn active">Server Mode</button>
+          <button id="wasm-mode-btn" class="mode-btn">WASM Mode</button>
+          <button id="export-metrics" class="export-button">Export Metrics</button>
+        </div>
+      </header>
+
+      <div class="main-container">
+        <div class="panel video-panel">
+          <h2>Live Video Stream</h2>
+          <div class="video-container video-wrap">
+            <!-- viewer will get processed video from server -->
+            <video id="video" autoplay playsinline muted></video>
+            <canvas id="overlay"></canvas>
+          </div>
+        </div>
+
+        <div class="panel control-panel">
+          <div id="connection-info">
+            <h2>Connect Phone</h2>
+            <p>Scan the QR code with your phone's camera to start streaming to this viewer.</p>
+            <div id="qr-container"></div>
+          </div>
+
+          <div id="metrics-info" class="hidden">
+            <h2>Live Metrics</h2>
+            <div class="metrics-grid">
+              <div class="metric-item"><span class="metric-label">Status</span><span id="metric-status"
+                  class="metric-value">--</span></div>
+              <div class="metric-item"><span class="metric-label">Processed FPS</span><span id="metric-fps"
+                  class="metric-value">--</span></div>
+              <div class="metric-item"><span class="metric-label">Median Latency</span><span id="metric-latency-median"
+                  class="metric-value">--</span></div>
+              <div class="metric-item"><span class="metric-label">P95 Latency</span><span id="metric-latency-p95"
+                  class="metric-value">--</span></div>
+              <div class="metric-item"><span class="metric-label">Total Frames</span><span id="metric-total-frames"
+                  class="metric-value">--</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobile-view">
+      <header class="mobile-header">
+        <h1>Streaming Device</h1>
+        <button id="stop-stream" class="stop-button">Stop Stream</button>
+      </header>
+      <div class="mobile-panel">
+        <h2>Connection Status</h2>
+        <p id="mobile-status">Connecting...</p>
+        <div class="metrics-grid">
+          <div class="metric-item"><span class="metric-label">Stream Status</span><span id="mobile-stream-status"
+              class="metric-value">Active</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.min.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+
+</html>

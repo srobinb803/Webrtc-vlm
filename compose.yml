@@ -1,0 +1,21 @@
+# compose.yml - The correct configuration for Docker Desktop
+
+services:
+  webrtc_demo:
+    build: .
+    container_name: webrtc_vlm
+
+    # This is the standard, reliable way to create a tunnel from your
+    # computer's port 8080 to the container's port 8080.
+    ports:
+      - "8080:8080"
+      
+    # The environment variable is still needed for mode switching.
+    environment:
+      - MODE
+      
+    # The volumes are still needed for live code updates.
+    volumes:
+      - ./server.py:/app/server.py
+      - ./frontend:/app/frontend
+      - ./models:/app/models

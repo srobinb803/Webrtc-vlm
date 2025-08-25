@@ -1,0 +1,6 @@
+# Python virtual environment
+venv
+
+# Models
+models/__pycache__
+ngrok.log

@@ -1,0 +1,25 @@
+# .dockerignore
+
+# Ignore Git directory
+.git
+.gitignore
+
+# Ignore Python virtual environment and cache
+venv/
+__pycache__/
+*.pyc
+models/__pycache__
+
+# Ignore Node.js dependencies if you have a local bench setup
+bench/node_modules
+node_modules/
+
+# Ignore Docker and VSCode specific files
+Dockerfile
+docker-compose.yml
+compose.yml
+.env
+.vscode/
+
+# Ignore log files
+*.log
