@@ -4,6 +4,8 @@ This project demonstrates a real-time, end-to-end computer vision pipeline. It s
 
 The system is fully containerized with Docker for easy, one-command reproducibility and supports two distinct processing modes that can be switched dynamically from the user interface:
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Video%20Link-F97415?style=flat&labelColor=FBEFAC)](https://www.loom.com/share/851eadce7d5147f3a421b2c3ae983cb6?sid=dc732a87-25e7-4c1f-87b7-bc784e066e8b)
+
 1. **Server Mode:** Inference is performed on a Python backend using native ONNX Runtime.
 2. **WASM Mode:** Inference is performed directly in the browser using ONNX Runtime Web (WebAssembly).
 
@@ -104,6 +106,6 @@ To maintain low latency and prevent the video stream from falling behind, a "Pro
 
 The final metrics reveal a critical and insightful trade-off between the two modes, even though both run on the same physical CPU:
 
-**Server Mode is High-Throughput (Lower Latency, Higher FPS):** The server's end-to-end latency is remarkably low (~157ms), and it achieves a higher processed FPS (~3.0). This is because the native Python ONNX Runtime is a highly optimized C++ backend that can leverage low-level CPU instructions. It runs as a dedicated process with minimal overhead. This mode is superior for raw performance and throughput.
+**Server Mode is High-Throughput (Lower Latency, Higher FPS):** Higher performance (~157ms latency, 3.0 FPS) due to native ONNX Runtime with optimized CPU instructions and dedicated processing.
 
-**WASM Mode is Computationally Expensive (Higher Latency, Lower FPS):** The WASM mode's latency (~511ms) is significantly higher. This latency is a measure of the computation time on the client. The browser environment imposes a "sandbox tax": the WASM code cannot use the same low-level CPU optimizations, and it must compete for resources on the browser's busy main thread. While this mode has near-zero network latency, the processing itself is the bottleneck. This mode is superior for offloading server costs and for privacy, but at a performance cost on the client device.
+**WASM Mode is Computationally Expensive (Higher Latency, Lower FPS):** Lower performance (~511ms latency, 1.0 FPS) due to browser sandbox limitations and main thread competition. Better for privacy and server cost reduction.
