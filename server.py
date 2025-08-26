@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-"""
-WebRTC server with dual-mode support (server/WASM) for object detection.
-"""
 import os
 import time
 import json
@@ -14,8 +10,6 @@ import cv2
 from av import VideoFrame
 from statistics import median
 from typing import Dict, List
-
-# Import utility functions
 from models.yolov5_utils import letterbox, process_detections, draw_detections, COCO_NAMES
 
 # Configuration
@@ -53,7 +47,6 @@ if MODE == "server":
 else:
     print("[server] Running in WASM mode - no server-side inference")
 
-# COCO class names
 
 names_map = {i: n for i, n in enumerate(COCO_NAMES)}
 
@@ -141,14 +134,14 @@ def create_transform_track(source: MediaStreamTrack, tag: str, client_mode: str 
             if frame.pts and frame.time_base:
                 original_capture_ts = int((frame.pts * frame.time_base) * 1000)
 
-            # 2. Check if the timestamp is valid. A timestamp from the last hour is considered valid.
+            # Check if the timestamp is valid. A timestamp from the last hour is considered valid.
             #    This prevents using initial frames where pts might be 0.
             current_time_ms = int(time.time() * 1000)
             if (current_time_ms - original_capture_ts) > 3600 * 1000:
-                # 3. If NOT valid, use the server's current time as a fallback.
+                # If NOT valid, use the server's current time as a fallback.
                 capture_ts_ms = current_time_ms
             else:
-                # 4. If valid, use the original timestamp.
+                # If valid, use the original timestamp.
                 capture_ts_ms = original_capture_ts
             
 
@@ -157,8 +150,7 @@ def create_transform_track(source: MediaStreamTrack, tag: str, client_mode: str 
                 if _metrics_start_time is None:
                     _metrics_start_time = time.time()
 
-                # Determine model layout and preprocess (same as before)...
-                # (keep your existing preprocessing/onnx inference logic here)
+
                 try:
                     # existing preprocessing & inference block:
                     layout = "NCHW"
@@ -255,7 +247,7 @@ def create_transform_track(source: MediaStreamTrack, tag: str, client_mode: str 
     return TransformTrack(source)
 
 
-# REST endpoint handlers (same as before)
+# REST endpoint handlers
 async def offer_phone(request):
     """Handle phone offer."""
     tag = request.query.get("tag")
@@ -293,7 +285,6 @@ async def offer_phone(request):
     
     return web.json_response({"sdp": pc.localDescription.sdp, "type": pc.localDescription.type})
 
-# Modified offer_view to accept client mode in query and create transform with that mode
 async def offer_view(request):
     """Handle viewer offer."""
     tag = request.query.get("tag")

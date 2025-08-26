@@ -325,7 +325,6 @@ async function getCameraStream() {
     return navigator.mediaDevices.getUserMedia({ video: true, audio: false });
 }
 
-// postWithRetry with expectedMode check
 async function postWithRetry(url, body, signal, maxAttempts = 5, delayMs = 1000) {
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
@@ -525,7 +524,6 @@ async function wasmProcessingLoop() {
     }
 }
 
-// ---- App boot ----
 async function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const room = urlParams.get('room');
